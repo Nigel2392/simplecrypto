@@ -12,13 +12,13 @@ import (
 
 // NewEncryptionKey generates a random 256-bit key for Encrypt() and
 // Decrypt(). It panics if the source of randomness fails.
-func NewEncryptionKey() *[32]byte {
+func NewEncryptionKey() (*[32]byte, error) {
 	key := [32]byte{}
 	_, err := io.ReadFull(rand.Reader, key[:])
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return &key
+	return &key, nil
 }
 
 // Encrypt encrypts data using 256-bit AES-GCM.  This both hides the content of
